@@ -1,0 +1,51 @@
+<div class="register-container">
+  <mat-card>
+    <mat-card-title>Register</mat-card-title>
+    <mat-card-content>
+      <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+        <mat-form-field appearance="fill">
+          <mat-label>İsim</mat-label>
+          <input matInput [(ngModel)]="name" name="name" required>
+          <mat-error *ngIf="registerForm.submitted && !name">İsim Giriniz</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Soyisim</mat-label>
+          <input matInput [(ngModel)]="surname" name="surname" required>
+          <mat-error *ngIf="registerForm.submitted && !surname">Soyisim Giriniz</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>TC Kimlik No</mat-label>
+          <input matInput [(ngModel)]="tc" name="tc" type="text" required>
+          <mat-error *ngIf="registerForm.submitted && !tc">TC Giriniz</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="email" name="email" type="email" required>
+          <mat-error *ngIf="registerForm.submitted && !email">Email Giriniz</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Şifre</mat-label>
+          <input matInput [(ngModel)]="password" name="password" type="password" required>
+          <mat-error *ngIf="registerForm.submitted && !password">Şifre Giriniz</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Tekrar Şifre</mat-label>
+          <input matInput [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required>
+          <mat-error *ngIf="registerForm.submitted && password !== confirmPassword">Şifreler uyuşmuyor</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Telefon</mat-label>
+          <input matInput [(ngModel)]="tel" name="tel" type="tel" required>
+          <mat-error *ngIf="registerForm.submitted && !tel">Telefon Giriniz</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Register</button>
+      </form>
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

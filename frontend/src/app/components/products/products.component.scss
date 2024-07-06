@@ -1,0 +1,20 @@
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:flex-start;
+}
+
+.product-card {
+  width: 300px;
+  margin: 10px;
+}
+
+.paginator-style{
+  position:relative;
+  bottom: 0px;
+  top: 0px;
+}
+
+.mat-card-actions{
+  justify-content:center;
+}

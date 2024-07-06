@@ -1,0 +1,47 @@
+<mat-toolbar color="primary">
+  <div>
+    <button mat-icon-button class="icon" aria-label="icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span (click)="loadHome()">E-Commerce</span>
+    <button mat-button (click)="loadProducts()">Products</button>
+
+    <button mat-button [matMenuTriggerFor]="belowMenu">Below</button>
+    <mat-menu #belowMenu="matMenu" yPosition="below">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="beforeMenu">Before</button>
+    <mat-menu #beforeMenu="matMenu" xPosition="before">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="afterMenu">About Us</button>
+    <mat-menu #afterMenu="matMenu" xPosition="after">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="login-register-buttons">
+    <button mat-button *ngIf="!isLoggedIn" (click)="openLoginDialog()">Login</button>
+    <button mat-button *ngIf="!isLoggedIn" (click)="openRegisterDialog()">Register</button>
+  </div>
+
+  <div class="icon-buttons">
+    <button mat-icon-button *ngIf="isLoggedIn" (click)="logout()" class="icon logout-icon" aria-label="">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <button mat-icon-button class="icon account_circle-icon" aria-label="">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button class="icon favorite-icon" aria-label="icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+<br>
