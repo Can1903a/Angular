@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environment/environment';
 import { Injectable } from '@angular/core';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +24,7 @@ export class EnvironmentService {
   getRegisterUrl(): string {
     return environment.registerUrl;
   }
+
   getCategoriesUrl(): string {
     return `${environment.apiUrl}/categories`;
   }
@@ -31,11 +33,17 @@ export class EnvironmentService {
     return `${environment.apiUrl}/uppercategories`;
   }
 
-  getSubcategoriesUrl(ustKategoriId: number): string {
+  getSubcategoriesUrl(ustKategoriId: string): string {
     return `${environment.apiUrl}/subcategories/${ustKategoriId}`;
   }
 
-  getProductsByCategoryUrl(categoryId: number): string {
+  getProductsByCategoryUrl(categoryId: string): string {
     return `${environment.apiUrl}/products/${categoryId}`;
+  }
+  getProfileUrl():string{
+    return environment.profileUrl;
+  }
+  getChangePasswordUrl(): string {
+    return `${environment.apiUrl}/profile/change-password`;
   }
 }

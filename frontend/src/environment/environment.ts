@@ -4,6 +4,7 @@ export const environment = {
   productsUrl: 'http://localhost:3000/products',
   loginUrl: 'http://localhost:3000/login',
   registerUrl: 'http://localhost:3000/register',
+  profileUrl: 'http://localhost:3000/profile',
 
 
 };

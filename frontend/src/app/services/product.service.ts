@@ -13,15 +13,18 @@ export class ProductService {
 
   constructor(private http: HttpClient, private envService: EnvironmentService) {
     this.productsUrl = this.envService.getProductsUrl();
+
   }
 
   getProducts(page: number, pageSize: number): Observable<any> {
     return this.http.get<any>(`${this.productsUrl}?page=${page}&pageSize=${pageSize}`);
   }
-  getProductsByCategory(categoryId: number): Observable<Product[]> {
+  getProductsByCategory(categoryId: string): Observable<Product[]> {
     return this.http.get<Product[]>(this.envService.getProductsByCategoryUrl(categoryId));
   }
 }
+
+/*
 export enum ProductNames {
   Urunler_id = 'Urunler_id',
   Urunler_Adi = 'Urunler_Adi',
@@ -33,18 +36,19 @@ export enum ProductNames {
   IndirimOrani = 'IndirimOrani',
   Marka_id = 'Marka_id',
 }
-
+*/
 export interface Product {
-  type: ProductNames;
-  Urunler_id: number;
+  //  type: ProductNames;
+  _id: string;
   Urunler_Adi: string;
   Urunler_Aciklama?: string;
   Urunler_Fiyat: number;
   Stok_Adet?: number;
-  Kategori_id: number;
+  Kategori_id: string;
   Resim_URL?: string;
   IndirimOrani: number;
   Marka_id?: number;
+  adet: number;
 }
 export interface ProductResponse {
   data: Product[];

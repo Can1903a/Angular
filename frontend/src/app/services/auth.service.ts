@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, ReplaySubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { EnvironmentService } from './environment.service';
 
@@ -9,17 +9,16 @@ import { EnvironmentService } from './environment.service';
 })
 export class AuthService {
 
-  private loginUrl : string;
-  private registerUrl : string;
-
+  private loginUrl: string;
+  private registerUrl: string;
   private loggedIn = new BehaviorSubject<boolean>(this.kontrol());
 
   constructor(private http: HttpClient, private router: Router,
-    private envService: EnvironmentService
+    private envService: EnvironmentService,
   ) {
-    this.loginUrl = this.envService.getProductsUrl();
-    this.registerUrl = this.envService.getProductsUrl();
-   }
+    this.loginUrl = this.envService.getLoginUrl();
+    this.registerUrl = this.envService.getRegisterUrl();
+  }
 
   private kontrol(): boolean {
     return typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
@@ -34,6 +33,7 @@ export class AuthService {
       tap((response: any) => {
         if (response.token) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('userId', response.customer._id);
           this.loggedIn.next(true);
           this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/home']);
@@ -46,9 +46,10 @@ export class AuthService {
   logout() {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
     }
     this.loggedIn.next(false);
-    this.router.navigate(['/home']); // Redirect to login page after logout
+    this.router.navigate(['/home']);
   }
 
   get isLoggedIn(): Observable<boolean> {

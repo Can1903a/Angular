@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EnvironmentService } from '../../services/environment.service';
 import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { CategoryService } from '../../services/category.service';
@@ -12,65 +12,57 @@ import { Router } from '@angular/router';
   templateUrl: './categoryselection.component.html',
   styleUrl: './categoryselection.component.scss'
 })
-export class CategoryselectionComponent {
+export class CategoryselectionComponent implements OnInit {
   upperCategories: UpperCategory[] = [];
-  subcategories: { [key: number]: Category[] } = {};
-  activeCategory: number | null = null;
-  selectedUpperCategoryId?: number;
+  subcategories: { [key: string]: Category[] } = {};
+  selectedUpperCategoryId?: string;
 
-
-  constructor(private categoryService: CategoryService,
-    private router: Router
-  )
-  { }
-
+  constructor(private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
-    this.categoryService.getUpperCategories().subscribe(categories => {
-      this.upperCategories = categories;
-      this.upperCategories.forEach(category => {
-        this.categoryService.getSubcategories(category.UstKategori_id).subscribe(subcategories => {
-          category.subcategories = subcategories;
+    this.categoryService.getUpperCategories().subscribe(
+      (categories: UpperCategory[]) => {
+        this.upperCategories = categories;
+
+        this.upperCategories.forEach(upperCategory => {
+          const ustKategoriId = upperCategory._id;
+          this.categoryService.getSubcategories(ustKategoriId).subscribe(
+            (subcategories: Category[]) => {
+              this.subcategories[ustKategoriId] = subcategories;
+            },
+            error => {
+              console.error('Error fetching subcategories:', error);
+            }
+          );
         });
-      });
-    });
+      },
+      error => {
+        console.error('Error fetching upper categories:', error);
+      }
+    );
   }
 
-/*toggleSubcategories(categoryId: number): void {
-    if (this.activeCategory === categoryId) {
-      this.activeCategory = null;
-      return;
-    }
-
-    if (!this.subcategories[categoryId]) {
-      this.categoryService.getSubcategories(categoryId).subscribe(subcats => {
-        this.subcategories[categoryId] = subcats;
-        this.activeCategory = categoryId;
-      });
-    } else {
-      this.activeCategory = categoryId;
-    }
-  }
-*/
-  toggleDropdown(upperCategoryId: number): void {
+  toggleDropdown(upperCategoryId: string): void {
     if (this.selectedUpperCategoryId === upperCategoryId) {
       this.selectedUpperCategoryId = undefined;
     } else {
       this.selectedUpperCategoryId = upperCategoryId;
     }
   }
-  onSubcategoryClick(categoryId: number): void {
-    this.router.navigate(['/home/products'], { queryParams: { categoryId } });
+
+  onSubcategoryClick(subCategoryId: string): void {
+    this.router.navigate(['/home/products'], { queryParams: { subCategoryId } });
   }
 }
+
 export interface UpperCategory {
-  UstKategori_id: number;
+  _id: string;
   UstKategori_Adi: string;
   subcategories?: Category[];
 }
 
 export interface Category {
-  Kategori_id: number;
+  _id: string;
   Kategori_Adi: string;
-  UstKategori_id: number;
+  UstKategori_id: string;
 }

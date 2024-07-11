@@ -1,0 +1,24 @@
+<mat-tab-group>
+  <mat-tab label="Profile">
+    <div>
+      <h2>Kullanıcı Bilgileri</h2>
+      <p><strong>Adı:</strong> {{ user?.Musteriler_Adi }}</p>
+      <p><strong>Soyadı:</strong> {{ user?.Musteriler_Soyadi }}</p>
+      <p><strong>Email:</strong> {{ user?.Musteriler_Email }}</p>
+      <p><strong>Telefon:</strong> {{ user?.Musteriler_Telefon }}</p>
+    </div>
+  </mat-tab>
+  <mat-tab label="Şifre Değiştir">
+    <form (ngSubmit)="changePassword()">
+      <mat-form-field>
+        <mat-label>Mevcut Şifre</mat-label>
+        <input matInput [(ngModel)]="currentPassword" name="currentPassword" required type="password">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Yeni Şifre</mat-label>
+        <input matInput [(ngModel)]="newPassword" name="newPassword" required type="password">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Şifreyi Değiştir</button>
+    </form>
+  </mat-tab>
+</mat-tab-group>

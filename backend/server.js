@@ -18,7 +18,7 @@ const db = mysql.createPool({
 
 //////LOGIN
 app.post('/login', async (req, res) => {
-  const sql = "SELECT * FROM Musteriler WHERE Musteriler_Email = ? AND Musteriler_Sifre = ?";
+  const sql = "SELECT * FROM musteriler WHERE Musteriler_Email = ? AND Musteriler_Sifre = ?";
   const values = [
     req.body.email,
     req.body.password
@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
 });
 /////REGISTER
 app.post('/register', async (req, res) => {
-  const sql = "INSERT INTO Musteriler (Musteriler_Adi, Musteriler_Soyadi, Musteriler_Tc, Musteriler_Sifre, Musteriler_Email, Musteriler_Telefon) VALUES (?, ?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO musteriler (Musteriler_Adi, Musteriler_Soyadi, Musteriler_Tc, Musteriler_Sifre, Musteriler_Email, Musteriler_Telefon) VALUES (?, ?, ?, ?, ?, ?)";
   const values = [
     req.body.name,
     req.body.surname,
@@ -107,9 +107,11 @@ app.get('/uppercategories', async (req, res) => {
 
 
 app.get('/subcategories/:ustKategoriId', async (req, res) => {
-  const ustKategoriId = req.params.ustKategoriId;
+  const ustKategoriId = req.params.ustKategoriId; 
   try {
-    const [subcategories] = await db.query('SELECT * FROM kategoriler WHERE UstKategori_id = ?', [ustKategoriId]);
+    const subcategories = await Category.find({ UstKategori_id: ustKategoriId });
+    console.log('Alt Kategoriler:', subcategories); 
+    console.log('ustKategoriId:', ustKategoriId); 
     res.json(subcategories);
   } catch (error) {
     console.error('Error fetching subcategories:', error);

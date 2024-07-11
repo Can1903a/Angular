@@ -8,7 +8,7 @@ import { CategoryselectionComponent } from "../categoryselection/categoryselecti
 @Component({
     selector: 'app-home',
     standalone: true,
-    template: '<app-navbar></app-navbar><app-categoryselection></app-categoryselection><router-outlet></router-outlet>',
+    template: '<app-navbar></app-navbar><router-outlet></router-outlet>',
     styleUrl: './home.component.css',
     imports: [NavbarComponent, RouterOutlet, ProductsComponent, CategoryselectionComponent]
 })

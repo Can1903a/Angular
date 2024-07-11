@@ -32,6 +32,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
   successMessage: string = '';
+  token: string = '';
 
   constructor(
     private authService: AuthService,
@@ -49,7 +50,11 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({
       next: (response: any) => {
-        localStorage.setItem('token', response.token);
+        this.token = response.token;
+        console.log('Token:', this.token);
+
+        localStorage.setItem('token', this.token);
+
         this.successMessage = 'Login successful!';
         console.log("başarılı giriş")
         this.router.navigate(['/home']);
@@ -63,3 +68,4 @@ export class LoginComponent {
 
   }
 }
+
