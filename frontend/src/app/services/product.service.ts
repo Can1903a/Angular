@@ -10,10 +10,11 @@ EnvironmentService
 export class ProductService {
 
   private productsUrl: string;
+  private apiUrl: string;
 
   constructor(private http: HttpClient, private envService: EnvironmentService) {
     this.productsUrl = this.envService.getProductsUrl();
-
+    this.apiUrl = this.envService.getApiUrl();
   }
 
   getProducts(page: number, pageSize: number): Observable<any> {
@@ -21,6 +22,18 @@ export class ProductService {
   }
   getProductsByCategory(categoryId: string): Observable<Product[]> {
     return this.http.get<Product[]>(this.envService.getProductsByCategoryUrl(categoryId));
+  }
+
+  addProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(`${this.apiUrl}/products`, product);
+  }
+
+  updateProduct(productId: string, product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/products/${productId}`, product);
+  }
+
+  deleteProduct(productId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/products/${productId}`);
   }
 }
 

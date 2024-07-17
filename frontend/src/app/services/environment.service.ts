@@ -46,4 +46,7 @@ export class EnvironmentService {
   getChangePasswordUrl(): string {
     return `${environment.apiUrl}/profile/change-password`;
   }
+  getAddProductUrl(): string{
+    return `${environment.adminUrl}/products`;
+  }
 }

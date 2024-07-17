@@ -41,7 +41,6 @@ export class LoginComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-
   login() {
     const credentials = {
       email: this.email,
@@ -56,8 +55,6 @@ export class LoginComponent {
         localStorage.setItem('token', this.token);
 
         this.successMessage = 'Login successful!';
-        console.log("başarılı giriş")
-        this.router.navigate(['/home']);
         this.dialogRef.close();
       },
       error: (error) => {
@@ -65,7 +62,6 @@ export class LoginComponent {
         this.errorMessage = 'Login failed. Please check your email and password.';
       }
     });
-
   }
 }
 

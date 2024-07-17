@@ -10,7 +10,9 @@
       <p>{{ product.Urunler_Fiyat | currency: "₺" }}</p>
     </mat-card-content>
     <mat-card-actions class="mat-card-actions">
-      <button mat-button (click)="addToCart(product)">Sepete Ekle</button>
+      <button mat-button *ngIf="!isAdmin" (click)="addToCart(product)">Sepete Ekle</button>
+      <button mat-button *ngIf="isAdmin" (click)="editProduct(product)">Düzenle</button>
+      <button mat-button *ngIf="isAdmin" (click)="deleteProduct(product._id)">Sil</button>
     </mat-card-actions>
   </mat-card>
 </div>

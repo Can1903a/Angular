@@ -18,23 +18,24 @@ export class ProfileService {
   }
 
   private getAuthHeaders(): HttpHeaders {
-    if (typeof localStorage !== 'undefined') {
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token) {
       return new HttpHeaders({
         Authorization: `Bearer ${token}`
       });
+    } else {
+      return new HttpHeaders();
     }
-    return new HttpHeaders();
   }
 
   getProfile(): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/profile`, {
+    return this.http.get<User>(this.profileUrl, {
       headers: this.getAuthHeaders()
     });
   }
 
   changePassword(currentPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/profile/change-password`,
+    return this.http.post(this.changePasswordUrl,
       { currentPassword, newPassword },
       {
         headers: this.getAuthHeaders()
@@ -42,3 +43,4 @@ export class ProfileService {
     );
   }
 }
+

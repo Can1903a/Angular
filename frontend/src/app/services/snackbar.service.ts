@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../components/snackbar/snackbar.component';
+import { MESSAGES } from '../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -17,4 +18,14 @@ export class SnackbarService {
       horizontalPosition: 'center'
     });
   }
+  openProfileFailSnackBar(profileFailMessage:string,duration: number =3000)
+  {
+    this.snackBar.openFromComponent(SnackbarComponent,{
+      data:{profileFailMessage: MESSAGES.profileFetchError},
+      duration:duration,
+      verticalPosition:'bottom',
+      horizontalPosition:'center'
+    });
+  }
+
 }

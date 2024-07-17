@@ -7,16 +7,16 @@ import { DialogGuard } from '../../dialog.guard';
 import { RegisterComponent } from '../register/register.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { AccountComponent } from '../account/account.component';
-import { MatInputModule } from '@angular/material/input';
 
 const routes: Routes = [
   {
-  path: '', component: HomeComponent, children: [
+  path: '', component: HomeComponent,children: [
     { path: 'products', component: ProductsComponent},
     { path: 'login', component: LoginComponent ,canActivate: [DialogGuard]},
     { path: 'register', component: RegisterComponent, canActivate: [DialogGuard] },
-    { path: 'account', component: AccountComponent },
-    { path: 'account/profile', component: ProfileComponent }
+    { path: 'account', component: AccountComponent, children: [
+      { path: 'profile', component: ProfileComponent }
+    ]}
   ]
 }
 ];

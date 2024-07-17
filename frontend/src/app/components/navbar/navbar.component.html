@@ -3,26 +3,11 @@
     <button mat-icon-button class="icon" aria-label="icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button>
-    <span (click)="loadHome()">E-Commerce</span>
+    <span (click)="loadHome()">E-Commerce
+    <mat-icon>store</mat-icon>
+  </span>
     <button mat-button (click)="loadProducts()">Products</button>
-
-    <button mat-button [matMenuTriggerFor]="belowMenu">Below</button>
-    <mat-menu #belowMenu="matMenu" yPosition="below">
-      <button mat-menu-item>Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="beforeMenu">Before</button>
-    <mat-menu #beforeMenu="matMenu" xPosition="before">
-      <button mat-menu-item>Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
-
-    <button mat-button [matMenuTriggerFor]="afterMenu">About Us</button>
-    <mat-menu #afterMenu="matMenu" xPosition="after">
-      <button mat-menu-item>Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
+    <button mat-button >About Us</button>
   </div>
 
   <div class="spacer"></div>
@@ -38,7 +23,7 @@
     </button>
     <div *ngIf="showCart" class="cart-popup">
       <div *ngFor="let item of cartItems">
-        <p>{{item.adet}} - {{ item.Urunler_Adi }} - {{ item.Urunler_Fiyat | currency }}</p>
+        <p>{{item.adet}} - {{ item.Urunler_Adi }} - {{ item.Urunler_Fiyat | currency: "TRY":"₺" }}</p>
         <button mat-button (click)="removeFromCart(item._id)">Remove</button>
       </div>
     </div>
