@@ -6,7 +6,7 @@ import { AuthService } from './services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuard implements CanActivate {
+export class ProfileGuard implements CanActivate {
 
   constructor(
     private authService: AuthService,
@@ -15,10 +15,9 @@ export class RoleGuard implements CanActivate {
 
   canActivate(): boolean {
     if (this.authService.checkAdminStatus()) {
-      return true;
-    } else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/admin']);
       return false;
     }
+    return true;
   }
 }

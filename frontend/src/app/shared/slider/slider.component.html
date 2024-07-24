@@ -1,0 +1,10 @@
+<div class="slider">
+  <div *ngFor="let product of randomProducts">
+    <div class="product-card">
+      <img [src]="product.Resim_URL" alt="{{product.Urunler_Adi}}">
+      <h3>{{product.Urunler_Adi}}</h3>
+      <p>{{product.Urunler_Aciklama}}</p>
+      <p>{{product.Urunler_Fiyat| currency}}</p>
+    </div>
+  </div>
+</div>

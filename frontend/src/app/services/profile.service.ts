@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvironmentService } from './environment.service';
-import { User } from '../components/profile/profile.component';
+import { User } from '../user/profile/profile.component';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment/environment';
 
@@ -11,6 +11,7 @@ import { environment } from '../../environment/environment';
 export class ProfileService {
   private profileUrl: string;
   private changePasswordUrl: string;
+
 
   constructor(private http: HttpClient, private envService: EnvironmentService) {
     this.profileUrl = this.envService.getProfileUrl();

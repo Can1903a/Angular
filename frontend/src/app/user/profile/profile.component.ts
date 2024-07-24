@@ -44,4 +44,5 @@ export interface User {
   Musteriler_Sifre: string;
   Musteriler_Email: string;
   Musteriler_Telefon: string;
+  isAdmin:boolean;
 }

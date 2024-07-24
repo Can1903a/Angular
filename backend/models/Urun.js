@@ -8,7 +8,7 @@ const urunSchema = new Schema({
     Stok_Adet: { type: String },
     Kategori_id: { type: Schema.Types.ObjectId, ref: 'kategori', required: true },
     IndirimOrani: { type: Number, default: 0 },
-    Marka_id: { type: Number },
+    Marka_id: { type: Number ,required: false},
     Resim_URL: { type: String }
 });
 

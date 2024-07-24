@@ -1,0 +1,11 @@
+<mat-sidenav-container class="account-container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item *ngIf="isLoggedIn" [routerLink]="['/account/profile']">Profile</a>
+      <a mat-list-item *ngIf="isLoggedIn" [routerLink]="['/account/shopping-card']">Shopping Card</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

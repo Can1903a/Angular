@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EnvironmentService } from '../../services/environment.service';
 import { NgFor, NgForOf, NgIf } from '@angular/common';
-import { CategoryService } from '../../services/category.service';
+import { Category, CategoryService, UpperCategory } from '../../services/category.service';
 import { Router } from '@angular/router';
 
 
@@ -55,14 +54,3 @@ export class CategoryselectionComponent implements OnInit {
   }
 }
 
-export interface UpperCategory {
-  _id: string;
-  UstKategori_Adi: string;
-  subcategories?: Category[];
-}
-
-export interface Category {
-  _id: string;
-  Kategori_Adi: string;
-  UstKategori_id: string;
-}

@@ -26,7 +26,7 @@ const authorizeAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(403).json({ error: 'Access denied. Admins only.' });
+    res.status(403).json({ error: 'Admins only.' });
   }
 };
 
@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
   try {
     const customer = await Customer.findOne({ Musteriler_Email: email, Musteriler_Sifre: password });
     if (customer) {
-      const token = jwt.sign({ _id: customer._id, isAdmin: customer.isAdmin }, 'token', { expiresIn: '3h' });
+      const token = jwt.sign({ _id: customer._id, isAdmin: customer.isAdmin }, 'token', { expiresIn: '2h' });
       res.json({ token, customer });
     } else {
       res.status(401).json("Invalid email or password");
@@ -62,10 +62,10 @@ app.post('/register', async (req, res) => {
     });
 
     await customer.save();
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully" }); //200
   } catch (err) {
     console.error('Error during query:', err);
-    res.status(500).json({ message: "Registration Failed" });
+    res.status(500).json({ message: "Registration Failed" }); //400
   }
 });
 
@@ -215,16 +215,19 @@ app.get('/admin/products/:productId', authenticate, authorizeAdmin, async (req, 
   }
 });
 
-// Yeni ürün ekle
 app.post('/admin/products', authenticate, authorizeAdmin, async (req, res) => {
-  const { name, description, price, categoryId } = req.body;
+  const { Urunler_Adi, Urunler_Aciklama, Urunler_Fiyat, Resim_URL, Kategori_id, Stok_Adet, IndirimOrani, Marka_id } = req.body;
 
   try {
     const newProduct = new Product({
-      name,
-      description,
-      price,
-      categoryId
+      Urunler_Adi,
+      Urunler_Aciklama,
+      Urunler_Fiyat,
+      Resim_URL,
+      Kategori_id,
+      Stok_Adet,
+      IndirimOrani,
+      Marka_id
     });
 
     await newProduct.save();
@@ -238,14 +241,18 @@ app.post('/admin/products', authenticate, authorizeAdmin, async (req, res) => {
 // Ürün güncelle
 app.put('/admin/products/:productId', authenticate, authorizeAdmin, async (req, res) => {
   const productId = req.params.productId;
-  const { name, description, price, categoryId } = req.body;
+  const { Urunler_Adi, Urunler_Aciklama, Urunler_Fiyat, Stok_Adet, Resim_URL, Kategori_id, IndirimOrani, Marka_id } = req.body;
 
   try {
     const updatedProduct = await Product.findByIdAndUpdate(productId, {
-      name,
-      description,
-      price,
-      categoryId
+      Urunler_Adi,
+      Urunler_Aciklama,
+      Urunler_Fiyat,
+      Stok_Adet,
+      Resim_URL,
+      Kategori_id,
+      IndirimOrani,
+      Marka_id 
     }, { new: true });
 
     if (!updatedProduct) {
@@ -259,7 +266,8 @@ app.put('/admin/products/:productId', authenticate, authorizeAdmin, async (req, 
   }
 });
 
-// Ürün sil
+
+
 app.delete('/admin/products/:productId', authenticate, authorizeAdmin, async (req, res) => {
   const productId = req.params.productId;
 
@@ -270,10 +278,29 @@ app.delete('/admin/products/:productId', authenticate, authorizeAdmin, async (re
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    res.json({ message: 'Product deleted successfully', product: deletedProduct });
+    res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error('Error deleting product:', error);
     res.status(500).json({ error: 'Failed to delete product' });
+  }
+});
+
+app.get('/admin/users', async (req, res) => {
+  try {
+    const users = await Customer.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.get ('/slider', async (req, res) => {
+  try {
+    const products = await Product.aggregate([{ $sample: { size: 5 } }]);
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

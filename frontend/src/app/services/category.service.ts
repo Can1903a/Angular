@@ -23,3 +23,15 @@ export class CategoryService {
     return this.http.get(`${environment.apiUrl}/subcategories/${ustKategoriId}`);
   }
 }
+
+export interface UpperCategory {
+  _id: string;
+  UstKategori_Adi: string;
+  subcategories?: Category[];
+}
+
+export interface Category {
+  _id: string;
+  Kategori_Adi: string;
+  UstKategori_id: string;
+}

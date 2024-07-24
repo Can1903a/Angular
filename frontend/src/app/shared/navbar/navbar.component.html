@@ -3,19 +3,14 @@
     <button mat-icon-button class="icon" aria-label="icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button>
-    <span (click)="loadHome()">E-Commerce
-    <mat-icon>store</mat-icon>
-  </span>
-    <button mat-button (click)="loadProducts()">Products</button>
-    <button mat-button >About Us</button>
+    <span (click)="selectItem('/home')">E-Commerce
+      <mat-icon>store</mat-icon>
+    </span>
+    <ng-container *ngFor="let item of navigationItems">
+      <button mat-button (click)="selectItem(item.path)">{{ item.text }}</button>
+    </ng-container>
   </div>
-
-  <div class="spacer"></div>
-
-  <div class="login-register-buttons">
-    <button mat-button *ngIf="!isLoggedIn" (click)="openLoginDialog()">Login</button>
-    <button mat-button *ngIf="!isLoggedIn" (click)="openRegisterDialog()">Register</button>
-  </div>
+<div class="spacer"></div>
 
   <div class="icon-buttons">
     <button mat-icon-button *ngIf="isLoggedIn" class="icon shopping_cart-icon" aria-label="" (click)="toggleCart()" matBadge="{{ cartItemCount }}" matBadgeColor="warn">
@@ -30,7 +25,7 @@
     <button mat-icon-button *ngIf="isLoggedIn" (click)="logout()" class="icon logout-icon" aria-label="">
       <mat-icon>logout</mat-icon>
     </button>
-    <button mat-icon-button class="icon account_circle-icon" *ngIf="isLoggedIn" (click)="openAccountComponent()" aria-label="">
+    <button mat-icon-button class="icon account_circle-icon" *ngIf="isLoggedIn && !isAdmin" (click)="selectItem('/account')" aria-label="Account">
       <mat-icon>account_circle</mat-icon>
     </button>
     <button mat-icon-button class="icon favorite-icon" aria-label="icon-button with heart icon">

@@ -1,8 +1,9 @@
 import { Component,OnInit } from '@angular/core';
-import { ActivatedRoute, Router ,RouterOutlet} from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { ActivatedRoute, NavigationEnd, Router ,RouterOutlet} from '@angular/router';
+import { LoginComponent } from './shared/login/login.component';
+import { RegisterComponent } from './user/register/register.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -16,10 +17,12 @@ export class AppComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+
     this.route.queryParams.subscribe(params => {
       const dialog = params['d'];
       if (dialog) {
@@ -31,6 +34,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
 
   openLoginDialog(): void {
     const dialogRef = this.dialog.open(LoginComponent);

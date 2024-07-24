@@ -17,4 +17,3 @@ export class DialogGuard implements CanActivate {
     return this.router.parseUrl('/?d=' + route.url[0].path);
   }
 }
-// Yetkilendirme

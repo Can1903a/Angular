@@ -8,8 +8,10 @@ const musteriSchema = new Schema({
     Musteriler_Sifre: { type: String, required: true },
     Musteriler_Email: { type: String },
     Musteriler_Telefon: { type: String },
-    isAdmin: { type: Boolean, required: true }
-});
+    isAdmin: {
+        type: Boolean,
+        default: false
+      }});
 
 const Musteri = mongoose.model('musteri', musteriSchema);
 module.exports = Musteri;

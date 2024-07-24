@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Ürün Düzenle</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editForm">
+    <mat-form-field>
+      <mat-label>Ürün Adı</mat-label>
+      <input matInput formControlName="Urunler_Adi">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Ürün Açıklaması</mat-label>
+      <input matInput formControlName="Urunler_Aciklama">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Fiyat</mat-label>
+      <input matInput formControlName="Urunler_Fiyat" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Ürün Stok</mat-label>
+      <input matInput formControlName="Stok_Adet" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Kategori</mat-label>
+      <mat-select formControlName="Kategori_id">
+        <mat-option *ngFor="let category of categories" [value]="category._id">
+          {{ category.Kategori_Adi }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>İndirim Oranı</mat-label>
+      <input matInput formControlName="IndirimOrani" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Resim URL</mat-label>
+      <input matInput formControlName="Resim_URL">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">İptal</button>
+  <button mat-button (click)="onSave()">Kaydet</button>
+</div>

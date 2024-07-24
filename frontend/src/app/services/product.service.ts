@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EnvironmentService } from './environment.service';
+import { AuthService } from './auth.service';
 EnvironmentService
 
 @Injectable({
@@ -11,10 +12,12 @@ export class ProductService {
 
   private productsUrl: string;
   private apiUrl: string;
+  private adminUrl : string;
 
-  constructor(private http: HttpClient, private envService: EnvironmentService) {
+  constructor(private http: HttpClient, private envService: EnvironmentService, private authService: AuthService) {
     this.productsUrl = this.envService.getProductsUrl();
     this.apiUrl = this.envService.getApiUrl();
+    this.adminUrl = this.envService.getAdminUrl();
   }
 
   getProducts(page: number, pageSize: number): Observable<any> {
@@ -24,34 +27,35 @@ export class ProductService {
     return this.http.get<Product[]>(this.envService.getProductsByCategoryUrl(categoryId));
   }
 
-  addProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(`${this.apiUrl}/products`, product);
+  getAdminProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.adminUrl}/products`);
   }
 
-  updateProduct(productId: string, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/products/${productId}`, product);
+  getAdminProduct(productId: string): Observable<Product> {
+    return this.http.get<Product>(`${this.adminUrl}/products/${productId}`);
   }
 
-  deleteProduct(productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/products/${productId}`);
+  addProduct(product: Product[]): Observable<Product[]> {
+    const headers = this.authService.addTokenToHeaders();
+    return this.http.post<Product[]>(`${this.adminUrl}/products`, product ,{headers});
+  }
+
+  updateProduct(productId: string, product: Product[]): Observable<Product[]> {
+    const headers = this.authService.addTokenToHeaders();
+    return this.http.put<Product[]>(`${this.adminUrl}/products/${productId}`, product, { headers });
+  }
+
+  deleteProduct(productId: string): Observable<Product[]> {
+    const headers = this.authService.addTokenToHeaders();
+    return this.http.delete<Product[]>(`${this.adminUrl}/products/${productId}`, { headers });
+
+  }
+  getSliderProduct(): Observable<Product[]>{
+    return this.http.get<Product[]>(`${this.apiUrl}/slider`)
   }
 }
 
-/*
-export enum ProductNames {
-  Urunler_id = 'Urunler_id',
-  Urunler_Adi = 'Urunler_Adi',
-  Urunler_Aciklama = 'Urunler_Aciklama',
-  Urunler_Fiyat = 'Urunler_Fiyat',
-  Stok_Adet = 'Stok_Adet',
-  Kategori_id = 'Kategori_id',
-  Resim_URL = 'Resim_URL',
-  IndirimOrani = 'IndirimOrani',
-  Marka_id = 'Marka_id',
-}
-*/
 export interface Product {
-  //  type: ProductNames;
   _id: string;
   Urunler_Adi: string;
   Urunler_Aciklama?: string;
@@ -67,3 +71,16 @@ export interface ProductResponse {
   data: Product[];
   total: number;
 }
+/*
+export enum ProductNames {
+  Urunler_id = 'Urunler_id',
+  Urunler_Adi = 'Urunler_Adi',
+  Urunler_Aciklama = 'Urunler_Aciklama',
+  Urunler_Fiyat = 'Urunler_Fiyat',
+  Stok_Adet = 'Stok_Adet',
+  Kategori_id = 'Kategori_id',
+  Resim_URL = 'Resim_URL',
+  IndirimOrani = 'IndirimOrani',
+  Marka_id = 'Marka_id',
+}
+*/

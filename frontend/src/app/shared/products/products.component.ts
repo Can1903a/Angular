@@ -1,6 +1,6 @@
-import { CategoryselectionComponent } from './../categoryselection/categoryselection.component';
-import { AuthService } from './../../services/auth.service';
-import { CartService } from './../../services/cart.service';
+import { CategoryselectionComponent } from '../categoryselection/categoryselection.component';
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { Product, ProductService } from '../../services/product.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
@@ -11,15 +11,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { SnackbarService } from '../../services/snackbar.service';
-import { ProductDialogComponent } from '../product-dialog/product-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { ProductEditDialogComponent } from '../../admin/product-edit-dialog/product-edit-dialog.component';
+import { MESSAGES } from '../../constants';
+
 
 @Component({
     selector: 'app-products',
     standalone: true,
     templateUrl: './products.component.html',
     styleUrl: './products.component.scss',
-    imports: [ProductDialogComponent ,MatPaginator, MatCard, MatToolbar, MatCardHeader, MatCardHeader, MatCardContent, MatCardActions, MatCardTitle, CurrencyPipe, NgFor,NgIf, MatButton, MatIcon, CategoryselectionComponent]
+    imports: [MatPaginator, MatCard, MatToolbar, MatCardHeader, MatCardHeader, MatCardContent, MatCardActions, MatCardTitle, CurrencyPipe, NgFor,NgIf, MatButton, MatIcon, CategoryselectionComponent,MatInputModule]
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -28,6 +31,7 @@ export class ProductsComponent implements OnInit {
   currentPage: number = 0;
   selectedCategoryId?: string;
   isAdmin: boolean = false;
+
 
   constructor(private router: Router,
     private productService: ProductService,
@@ -52,9 +56,9 @@ export class ProductsComponent implements OnInit {
     this.authService.isLoggedIn.subscribe(loggedIn => {
       if (loggedIn) {
         this.cartService.addToCart(product);
-        this.snackbarService.openSnackBar('Product added to cart!', 3000);
+        this.snackbarService.openProductAdded;
       } else {
-        this.router.navigate(['/login']);//??????????????
+        this.snackbarService.openPorductFail;
       }
     });
   }
@@ -90,59 +94,43 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct(): void {
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
+    const dialogRef = this.dialog.open(ProductEditDialogComponent, {
       width: '400px',
-      data: { mode: 'add' }
+      data: { product: {}, isEditMode: false }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.addProduct(result).subscribe(
-          () => {
-            this.loadProducts();
-            this.snackbarService.openSnackBar('Product added successfully!', 3000);
-          },
-          error => {
-            console.error('Error adding product:', error);
-            this.snackbarService.openSnackBar('Failed to add product', 3000);
-          }
-        );
+        this.productService.addProduct(this.products).subscribe(() => {
+          this.loadProducts();
+        });
       }
     });
   }
 
+
   editProduct(product: Product): void {
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
+    const dialogRef = this.dialog.open(ProductEditDialogComponent, {
       width: '400px',
-      data: { product, mode: 'edit' }
+      data: { product, isEditMode: true }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.updateProduct(result._id, result).subscribe(
-          () => {
-            this.loadProducts();
-            this.snackbarService.openSnackBar('Product updated successfully!', 3000);
-          },
-          error => {
-            console.error('Error updating product:', error);
-            this.snackbarService.openSnackBar('Failed to update product', 3000);
-          }
-        );
+        this.productService.updateProduct(product._id, result).subscribe(() => {
+          this.loadProducts();
+        });
       }
     });
   }
 
   deleteProduct(productId: string): void {
-    this.productService.deleteProduct(productId).subscribe(
-      () => {
-        this.loadProducts();
-        this.snackbarService.openSnackBar('Product deleted successfully!', 3000);
-      },
-      error => {
-        console.error('Error deleting product:', error);
-        this.snackbarService.openSnackBar('Failed to delete product', 3000);
-      }
-    );
+    this.productService.deleteProduct(productId).subscribe(() => {
+      this.loadProducts();
+    });
+  }
+
+  isLoggedIn():void{
+    this.authService.isLoggedIn
   }
 }

@@ -1,6 +1,11 @@
 <app-categoryselection></app-categoryselection>
 <div class="product-list">
-  <mat-card *ngFor="let product of products" class="product-card">
+  <mat-toolbar>
+    <span>Products</span>
+    <span class="spacer"></span>
+    <button *ngIf="isAdmin" mat-button (click)="addProduct()">Ürün Ekle</button>
+  </mat-toolbar>
+    <mat-card *ngFor="let product of products" class="product-card">
     <mat-card-header>
       <mat-card-title>{{ product.Urunler_Adi }}</mat-card-title>
     </mat-card-header>
