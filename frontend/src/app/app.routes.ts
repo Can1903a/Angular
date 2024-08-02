@@ -11,6 +11,9 @@ import { ProfileGuard } from './profile.guard';
 import { ProfileComponent } from './user/profile/profile.component';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { HomeComponent } from './shared/home/home.component';
+import { ProductDetailsComponent } from './user/product-details/product-details.component';
+import { BasketComponent } from './user/basket/basket.component';
+import { CommentManagementComponent } from './admin/comment-management/comment-management.component';
 
 
 export const routes: Routes = [
@@ -23,16 +26,19 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'login', component: LoginComponent, canActivate:[DialogGuard] },
-      { path: 'register', component: RegisterComponent, canActivate:[DialogGuard] },
+      { path: 'home', component: HomeComponent, title:'Home'},
+      { path: 'products', component: ProductsComponent, title:'Products' },
+      { path: 'products/:productId', component: ProductDetailsComponent},
+      { path: 'login', component: LoginComponent, canActivate:[DialogGuard], title:'Login' },
+      { path: 'register', component: RegisterComponent, canActivate:[DialogGuard], title:'Register' },
+      { path: 'basket', component: BasketComponent, title:'Basket' },
       {
         path: 'account',
         component: AccountComponent,
+        title:'Account',
         canActivate: [ProfileGuard],
         children: [
-          { path: 'profile', component: ProfileComponent }
+          { path: 'profile', component: ProfileComponent, title: 'Profile' }
         ]
       },
       {
@@ -40,8 +46,9 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         children: [
           { path: 'home', component: HomeComponent },
-          { path: 'products', component: ProductsComponent },
-          { path: 'users', component: UserListComponent }
+          { path: 'products', component: ProductsComponent , title:'Products' },
+          { path: 'users', component: UserListComponent, title:'Users'  },
+          { path: 'comments', component:CommentManagementComponent, title:'Comments'}
         ]
       }
     ]

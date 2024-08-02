@@ -4,5 +4,5 @@ export const MESSAGES = {
   passwordChangeSuccess: 'Şifre başarıyla değiştirildi',
   passwordChangeError: 'Şifre değiştirilemedi',
   productAdded:'Product added to cart!',
-  productNotAdded:'Product add failed!'
+  productNotAdded:'Product add failed!',
 };

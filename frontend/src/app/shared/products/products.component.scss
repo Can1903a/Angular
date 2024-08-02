@@ -1,20 +1,73 @@
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content:flex-start;
+  justify-content: center;
 }
 
 .product-card {
   width: 300px;
   margin: 10px;
+  background: #ffff;
+  outline: 2px solid #ff7300;}
+
+  .paginator-style {
+    position: relative;
+    bottom: 0px;
+    top: 0px;
+    justify-content: center;
+    display: flex;
+    font-size: 16px;
+    border-radius: 52px;
+    background: #ffff;  }
+
+  ::ng-deep .mat-mdc-paginator-outer-container {
+    color: black;
+    height: 80px;
+  }
+
+  ::ng-deep .mat-mdc-paginator-range-actions {
+    background-color: #ffd4b1;
+    border-radius: 30px;
+    outline: 2px solid #ff7300;
+  }
+
+
+.mat-card-actions {
+  justify-content: center;
+  margin-top: auto;
 }
 
-.paginator-style{
-  position:relative;
-  bottom: 0px;
-  top: 0px;
+mat-card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.mat-card-actions{
-  justify-content:center;
+mat-card-title {
+  display: block;
+  height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+  line-height: 3rem;
+  width: 260px;
+}
+
+
+.product-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15%;
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.allProducts{
+  border-radius: 52px;
+  justify-content: center;
 }

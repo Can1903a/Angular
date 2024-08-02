@@ -1,0 +1,43 @@
+
+<mat-card class="comment-section">
+  <mat-card-title>Yorumlar</mat-card-title>
+  <mat-divider></mat-divider>
+  <div *ngIf="comments.length > 0; else noComments" >
+  <div *ngFor="let comment of comments">
+    <mat-list-item>
+      <mat-icon matListIcon>person</mat-icon>
+      <div matLine>
+        <p>{{ comment.yorum }}</p>
+      </div>
+      <div matLine>
+        <mat-icon>star</mat-icon> <span>{{ comment.puan }}</span>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+</div>
+
+<ng-template #noComments>
+  <p>No comments yet.</p>
+</ng-template>
+
+
+  <mat-card-content>
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Yorum</mat-label>
+        <textarea matInput formControlName="yorum"></textarea>
+        <mat-error *ngIf="commentForm.get('yorum')?.invalid">Bu alan zorunludur</mat-error>
+      </mat-form-field>
+
+      <div class="rating">
+        <mat-icon
+          *ngFor="let star of [1, 2, 3, 4, 5]"
+          (click)="setRating(star)"
+          [class.selected]="star <= commentForm.get('puan')?.value">star</mat-icon>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="!commentForm.valid">Yorum Yap</button>
+    </form>
+  </mat-card-content>
+</mat-card>

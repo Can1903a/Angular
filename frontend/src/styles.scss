@@ -14,11 +14,13 @@ body {
   margin: 0;
   padding: 30px;
   height: 100%;
-  background-color: rgb(247, 239, 230);
+  background-color: #ffab5c;
+    //background: linear-gradient(0deg, #ffffff 0%, #f9e4cd 55%, #f7c388 83%, #f7a64a 100%);
 }
 
 html {
   height: 100%;
+
 }
 
 @include mat.core();

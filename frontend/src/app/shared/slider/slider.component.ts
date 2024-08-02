@@ -11,21 +11,24 @@ import { CommonModule, NgFor, NgForOf } from '@angular/common';
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.scss'
 })
+
 export class SliderComponent {
   products: Product[] = [];
+  randomProducts: Product[] = [];
+
+
   swiperConfig: SwiperOptions = {
     slidesPerView: 1,
-    spaceBetween: 10,
     navigation: true,
     pagination: { clickable: true },
     scrollbar: { draggable: true },
     autoplay: {
-      delay: 2500,
+      delay: 5000,
       disableOnInteraction: false
     },
     loop: true
   };
-  randomProducts: Product[] = [];
+
 
   constructor(private productService: ProductService) {}
 

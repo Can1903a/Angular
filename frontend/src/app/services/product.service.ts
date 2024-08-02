@@ -1,8 +1,11 @@
+import { CartService } from './cart.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EnvironmentService } from './environment.service';
 import { AuthService } from './auth.service';
+import { SnackbarService } from './snackbar.service';
+import { Router } from '@angular/router';
 EnvironmentService
 
 @Injectable({
@@ -14,7 +17,9 @@ export class ProductService {
   private apiUrl: string;
   private adminUrl : string;
 
-  constructor(private http: HttpClient, private envService: EnvironmentService, private authService: AuthService) {
+  constructor(private http: HttpClient, private envService: EnvironmentService,
+  private authService: AuthService,private CartService:CartService,
+  private snackBarService:SnackbarService,private router: Router) {
     this.productsUrl = this.envService.getProductsUrl();
     this.apiUrl = this.envService.getApiUrl();
     this.adminUrl = this.envService.getAdminUrl();
@@ -50,8 +55,31 @@ export class ProductService {
     return this.http.delete<Product[]>(`${this.adminUrl}/products/${productId}`, { headers });
 
   }
+
   getSliderProduct(): Observable<Product[]>{
     return this.http.get<Product[]>(`${this.apiUrl}/slider`)
+  }
+
+  getRandomProducts(): Observable<Product[]>{
+    return this.http.get<Product[]>(`${this.apiUrl}/randomProducts`)
+  }
+
+  getProductbyProductId(productId: string):Observable<Product>{
+    return this.http.get<Product>(`${this.apiUrl}/product/${productId}`);
+  }
+
+  addToCart(product: Product) {
+    this.authService.isLoggedIn.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.CartService.addToCart(product);
+        this.snackBarService.openProductAdded;
+      } else {
+        this.snackBarService.openPorductFail;
+      }
+    });
+  }
+  onProductClick(productId: string): void {
+    this.router.navigate(['/products', productId]);
   }
 }
 
@@ -71,6 +99,7 @@ export interface ProductResponse {
   data: Product[];
   total: number;
 }
+
 /*
 export enum ProductNames {
   Urunler_id = 'Urunler_id',

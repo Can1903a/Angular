@@ -5,8 +5,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const UpperCategory = require('./models/ustKategori');
 const Category = require('./models/kategori');
-const Customer = require('./models/Musteri')
+const Customer = require('./models/Musteri');
 const Product = require('./models/urun');
+const Comment = require('./models/Yorum');
 const app = express();
 const jwt = require('jsonwebtoken');
 
@@ -62,10 +63,10 @@ app.post('/register', async (req, res) => {
     });
 
     await customer.save();
-    res.status(201).json({ message: "User registered successfully" }); //200
+    res.status(200).json({ message: "User registered successfully" }); //200
   } catch (err) {
     console.error('Error during query:', err);
-    res.status(500).json({ message: "Registration Failed" }); //400
+    res.status(400).json({ message: "Registration Failed" }); //400
   }
 });
 
@@ -94,7 +95,6 @@ app.get('/profile', authenticate, async (req, res) => {
 app.post('/profile/change-password', authenticate, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const userId = req.user._id;
-
   try {
     const user = await Customer.findById(userId);
 
@@ -176,7 +176,6 @@ app.get('/subcategories/:ustKategoriId', async (req, res) => {
   }
 });
 
-// Belirli bir kategoriye ait ürünleri getir
 app.get('/products/:categoryId', async (req, res) => {
   const categoryId = req.params.categoryId;
   try {
@@ -206,6 +205,21 @@ app.get('/admin/products/:productId', authenticate, authorizeAdmin, async (req, 
   try {
     const product = await Product.findById(productId);
     if (!product) {
+      return res.status(400).json({ error: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ error: 'Failed to fetch product' });
+  }
+});
+
+
+app.get('/product/:productId', async (req, res) => {
+  const productId = req.params.productId;
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
     res.json(product);
@@ -214,6 +228,8 @@ app.get('/admin/products/:productId', authenticate, authorizeAdmin, async (req, 
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
+
+
 
 app.post('/admin/products', authenticate, authorizeAdmin, async (req, res) => {
   const { Urunler_Adi, Urunler_Aciklama, Urunler_Fiyat, Resim_URL, Kategori_id, Stok_Adet, IndirimOrani, Marka_id } = req.body;
@@ -301,6 +317,108 @@ app.get ('/slider', async (req, res) => {
     res.json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+app.get ('/randomProducts', async (req, res) => {
+  try {
+    const randomCategory = await Category.aggregate([{ $sample: { size: 1 } }]);
+    if (randomCategory.length>0) {
+      const categoryId = randomCategory[0]._id
+
+      const products = await Product.aggregate([
+        { $match: { Kategori_id: categoryId } },
+        { $sample: { size: 5 } }
+      ]);
+
+      res.json(products);
+    } else {
+      res.status(400).json({ message: 'Category Not Found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.post('/product/:productId/addComment', authenticate, async (req, res) => {
+  const productId = req.params.productId;
+  const { yorum, puan } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const newComment = new Comment({
+      musteri_Id: userId,
+      yorum,
+      puan,
+      urun_Id: productId,
+      yorum_Onay: false
+    });
+
+    await newComment.save();
+    res.status(201).json({ message: 'Comment Success', newComment });
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({ error: 'Failed to add comment' });
+  }
+});
+
+app.get('/product/:productId/comments', async (req, res) => {
+  const productId = req.params.productId;
+
+  try {
+    const comments = await Comment.find({ urun_Id: productId, yorum_Onay: true });
+    res.json(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+
+app.put('/comment/:commentId/approve', authenticate, authorizeAdmin, async (req, res) => {
+  const commentId = req.params.commentId;
+
+  try {
+    const updatedComment = await Comment.findByIdAndUpdate(
+      commentId,
+      { yorum_Onay: true },
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(400).json({ error: 'Comment not found' });
+    }
+
+    res.json(updatedComment);
+  } catch (error) {
+    console.error('Error approving comment:', error);
+    res.status(500).json({ error: 'Failed to approve comment' });
+  }
+});
+
+app.get('/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find();
+    res.json(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Failed to fetch comments' });
+  }
+});
+
+app.delete('/comment/:commentId/delete', authenticate, authorizeAdmin, async (req, res) => {
+  const commentId = req.params.commentId;
+
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(commentId);
+    if (!deletedComment) {
+      return res.status(400).json({ error: 'Comment not found' });
+    }
+
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.status(500).json({ error: 'Failed to delete comment' });
   }
 });
 

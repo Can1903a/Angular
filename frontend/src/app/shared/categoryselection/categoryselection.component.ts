@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgFor, NgForOf, NgIf } from '@angular/common';
 import { Category, CategoryService, UpperCategory } from '../../services/category.service';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../../services/auth.service';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-categoryselection',
   standalone: true,
-  imports: [NgFor,NgForOf,NgIf],
+  imports: [NgFor, NgForOf, NgIf],
   templateUrl: './categoryselection.component.html',
   styleUrl: './categoryselection.component.scss'
 })
@@ -15,10 +16,13 @@ export class CategoryselectionComponent implements OnInit {
   upperCategories: UpperCategory[] = [];
   subcategories: { [key: string]: Category[] } = {};
   selectedUpperCategoryId?: string;
+  isLoggedIn: boolean = false;
+  isAdmin: boolean = false;
 
-  constructor(private categoryService: CategoryService, private router: Router) { }
+  constructor(private categoryService: CategoryService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+
     this.categoryService.getUpperCategories().subscribe(
       (categories: UpperCategory[]) => {
         this.upperCategories = categories;
@@ -50,7 +54,11 @@ export class CategoryselectionComponent implements OnInit {
   }
 
   onSubcategoryClick(subCategoryId: string): void {
-    this.router.navigate(['/home/products'], { queryParams: { subCategoryId } });
+ {
+    }  if (this.isAdmin) {
+      this.router.navigate(['admin/products'], { queryParams: { subCategoryId } });
+    } else {
+      this.router.navigate(['/products'], { queryParams: { subCategoryId } });
+    }
   }
 }
-

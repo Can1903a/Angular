@@ -97,10 +97,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  toggleCart() {
-    this.showCart = !this.showCart;
-  }
-
   removeFromCart(productId: string) {
     this.cartService.removeFromCart(productId);
   }

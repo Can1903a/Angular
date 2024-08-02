@@ -1,8 +1,5 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="navbar">
   <div>
-    <button mat-icon-button class="icon" aria-label="icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
     <span (click)="selectItem('/home')">E-Commerce
       <mat-icon>store</mat-icon>
     </span>
@@ -13,15 +10,9 @@
 <div class="spacer"></div>
 
   <div class="icon-buttons">
-    <button mat-icon-button *ngIf="isLoggedIn" class="icon shopping_cart-icon" aria-label="" (click)="toggleCart()" matBadge="{{ cartItemCount }}" matBadgeColor="warn">
+    <button mat-icon-button *ngIf="isLoggedIn " aria-label="Sepet" (click)="selectItem('/basket')" matBadge="{{ cartItemCount }}" matBadgeColor="warn">
       <mat-icon>shopping_cart</mat-icon>
     </button>
-    <div *ngIf="showCart" class="cart-popup">
-      <div *ngFor="let item of cartItems">
-        <p>{{item.adet}} - {{ item.Urunler_Adi }} - {{ item.Urunler_Fiyat | currency: "TRY":"₺" }}</p>
-        <button mat-button (click)="removeFromCart(item._id)">Remove</button>
-      </div>
-    </div>
     <button mat-icon-button *ngIf="isLoggedIn" (click)="logout()" class="icon logout-icon" aria-label="">
       <mat-icon>logout</mat-icon>
     </button>

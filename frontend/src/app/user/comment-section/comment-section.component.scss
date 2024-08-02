@@ -1,0 +1,21 @@
+.comment-section {
+  margin: 20px;
+
+  .full-width {
+    width: 100%;
+  }
+
+  .rating {
+    display: flex;
+    gap: 5px;
+
+    mat-icon {
+      cursor: pointer;
+      color: gray;
+
+      &.selected {
+        color: gold;
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Sipariş Özeti</h1>
+<div mat-dialog-content>
+  <p>Toplam Tutar: {{ data.totalAmount | currency: 'TRY':'₺' }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">İptal</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Onayla</button>
+</div>

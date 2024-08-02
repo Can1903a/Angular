@@ -31,6 +31,7 @@ export class ProductsComponent implements OnInit {
   currentPage: number = 0;
   selectedCategoryId?: string;
   isAdmin: boolean = false;
+  product: Product | null = null;
 
 
   constructor(private router: Router,
@@ -52,15 +53,18 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  addToCart(product: Product) {
-    this.authService.isLoggedIn.subscribe(loggedIn => {
-      if (loggedIn) {
-        this.cartService.addToCart(product);
-        this.snackbarService.openProductAdded;
-      } else {
-        this.snackbarService.openPorductFail;
-      }
-    });
+  addToCart(product: Product): void {
+    if (this.authService.isLoggedIn && !this.isAdmin) {
+      this.productService.addToCart(product);
+      this.snackbarService.openProductAdded;
+    }
+    else if(this.authService.isLoggedIn && this.isAdmin)
+    {
+      this.snackbarService.openPorductFail;
+    }
+    else{
+      this.snackbarService.openProfileFailSnackBar;
+    }
   }
 
   loadProducts(): void {
@@ -101,13 +105,10 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.addProduct(this.products).subscribe(() => {
-          this.loadProducts();
-        });
+        this.loadProducts();
       }
     });
   }
-
 
   editProduct(product: Product): void {
     const dialogRef = this.dialog.open(ProductEditDialogComponent, {
@@ -117,9 +118,7 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.productService.updateProduct(product._id, result).subscribe(() => {
-          this.loadProducts();
-        });
+        this.loadProducts();
       }
     });
   }
@@ -132,5 +131,9 @@ export class ProductsComponent implements OnInit {
 
   isLoggedIn():void{
     this.authService.isLoggedIn
+  }
+
+  onProductClick(productId: string): void {
+    this.productService.onProductClick(productId)
   }
 }

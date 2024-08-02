@@ -52,5 +52,10 @@ export class EnvironmentService {
   getUserProfilesUrl(): string {
     return `${this.getAdminUrl()}/users`;
   }
-
+  getComments(): string {
+    return `${environment.apiUrl}/comments`;
+  }
+  getComment(): string {
+    return `${environment.apiUrl}/comment`;
+  }
 }

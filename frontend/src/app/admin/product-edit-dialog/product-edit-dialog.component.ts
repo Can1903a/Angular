@@ -28,13 +28,13 @@ export class ProductEditDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { product: Product, isEditMode: boolean }
   ) {
     this.editForm = this.fb.group({
-      Urunler_Adi: [data.product.Urunler_Adi],
-      Urunler_Aciklama: [data.product.Urunler_Aciklama],
-      Urunler_Fiyat: [data.product.Urunler_Fiyat],
-      Stok_Adet: [data.product.Stok_Adet],
-      Kategori_id: [data.product.Kategori_id],
-      IndirimOrani: [data.product.IndirimOrani],
-      Resim_URL: [data.product.Resim_URL]
+      Urunler_Adi: [data.product.Urunler_Adi || ''],
+      Urunler_Aciklama: [data.product.Urunler_Aciklama || ''],
+      Urunler_Fiyat: [data.product.Urunler_Fiyat || 0],
+      Stok_Adet: [data.product.Stok_Adet || 0],
+      Kategori_id: [data.product.Kategori_id || ''],
+      IndirimOrani: [data.product.IndirimOrani || 0],
+      Resim_URL: [data.product.Resim_URL || '']
     });
   }
 
@@ -46,15 +46,28 @@ export class ProductEditDialogComponent {
 
   onSave(): void {
     if (this.editForm.valid) {
-      this.productService.updateProduct(this.data.product._id, this.editForm.value).subscribe(
-        response => {
-          console.log('Product updated successfully', response);
-          this.dialogRef.close(response);
-        },
-        error => {
-          console.error('Error updating product', error);
-        }
-      );
+      const formValue = this.editForm.value;
+      if (this.data.isEditMode) {
+        this.productService.updateProduct(this.data.product._id, formValue).subscribe(
+          response => {
+            console.log('Product updated successfully', response);
+            this.dialogRef.close(response);
+          },
+          error => {
+            console.error('Error updating product', error);
+          }
+        );
+      } else {
+        this.productService.addProduct(formValue).subscribe(
+          response => {
+            console.log('Product added successfully', response);
+            this.dialogRef.close(response);
+          },
+          error => {
+            console.error('Error adding product', error);
+          }
+        );
+      }
     }
   }
 

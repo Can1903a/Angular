@@ -61,6 +61,7 @@ export class CartService {
     return [];
   }
 
+
   removeFromCart(productId: string) {
     const currentItems = this.getCartItems();
     const productIndex = currentItems.findIndex(item => item._id === productId);
@@ -80,6 +81,19 @@ export class CartService {
     this.cartItemsSubject.next(currentItems);
   }
 
+  deleteFromCart(productId: string) {
+    const currentItems = this.getCartItems();
+    const productIndex = currentItems.findIndex(item => item._id === productId);
+
+    if (productIndex > -1) {
+      currentItems.splice(productIndex, 1);
+    }
+
+    if (isBrowser()) {
+      localStorage.setItem(this.getCartKey(), JSON.stringify(currentItems));
+    }
+    this.cartItemsSubject.next(currentItems);
+  }
   clearCart() {
     if (isBrowser()) {
       localStorage.removeItem(this.getCartKey());

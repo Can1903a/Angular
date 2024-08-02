@@ -1,0 +1,14 @@
+<div class="random-products">
+  <div *ngIf="randomProducts.length === 0">Kategoride Yeterli Ürün Bulunamadı :/</div>
+  <div *ngFor="let product of randomProducts" class="product-card" (click)="onProductClick(product._id)">
+    <mat-card>
+      <mat-card-title>{{ product.Urunler_Adi }}</mat-card-title>
+      <div class="product-image">
+      <img mat-card-image width="300px" height="300px"  [src]="product.Resim_URL" alt="{{ product.Urunler_Adi }}">
+    </div>
+      <mat-card-content>
+        <p>{{ product.Urunler_Fiyat | currency: "₺" }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

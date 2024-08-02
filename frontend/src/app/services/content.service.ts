@@ -33,6 +33,9 @@ const GUEST_ITEMS: UserItem[] = [
   },
   { text: 'Register',
     path: '/register'
+  },
+  { text: 'ShoppingCart',
+    path: '/basket'
   }
 ];
 
@@ -45,6 +48,11 @@ const ADMIN_ITEMS: AdminItem[] = [
   {
     text: 'Users',
     path: '/admin/users'
+  },
+
+  {
+    text: 'Comments',
+    path: '/admin/comments'
   }
 ];
 
