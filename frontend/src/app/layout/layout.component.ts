@@ -20,7 +20,8 @@ export class LayoutComponent implements OnInit {
 
   currentItem: AdminItem | UserItem = {
     text: '',
-    path: ''
+    path: '',
+    class: ''
   };
 
   constructor(private router: Router, private route: ActivatedRoute, private contentService: ContentService) {}

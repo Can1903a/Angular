@@ -3,56 +3,66 @@ import { Injectable } from '@angular/core';
 export interface UserItem {
   text: string;
   path: string;
+  class: string;
 }
 
 export interface AdminItem {
   text: string;
   path: string;
+  class: string;
 }
 
-//Buraya css class vercen
 
 const USER_ITEMS: UserItem[] = [
   {
     text: 'Products',
-    path: '/products'
+    path: '/products',
+    class: 'left'
   },
   {
     text: 'Account',
-    path: '/account'
+    path: '/account',
+    class: 'right'
   }
 ];
 
 const GUEST_ITEMS: UserItem[] = [
   {
     text: 'Products',
-    path: '/products'
+    path: '/products',
+    class: 'left'
    },
   { text: 'Login',
-    path: '/login'
+    path: '/login',
+    class: 'right'
   },
   { text: 'Register',
-    path: '/register'
+    path: '/register',
+    class: 'right'
   },
   { text: 'ShoppingCart',
-    path: '/basket'
+    path: '/basket',
+    class: 'right'
   }
 ];
 
 const ADMIN_ITEMS: AdminItem[] = [
   {
     text: 'Products ',
-    path: '/admin/products'
+    path: '/admin/products',
+    class: 'left'
   },
 
   {
     text: 'Users',
-    path: '/admin/users'
+    path: '/admin/users',
+    class: 'left'
   },
 
   {
     text: 'Comments',
-    path: '/admin/comments'
+    path: '/admin/comments',
+    class: ''
   }
 ];
 

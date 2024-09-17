@@ -5,3 +5,26 @@
 .navbar{
   border-radius: 52px;
 }
+
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-container {
+  display: flex;
+  width: 100%;
+}
+
+.nav-container .mat-button {
+  margin-right: 10px;
+}
+
+.nav-container .left {
+  margin-left: auto;
+}
+
+.nav-container .right {
+  margin-left: 10px;
+}

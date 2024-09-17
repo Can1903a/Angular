@@ -1,13 +1,18 @@
 <mat-toolbar color="primary" class="navbar">
-  <div>
     <span (click)="selectItem('/home')">E-Commerce
       <mat-icon>store</mat-icon>
     </span>
-    <ng-container *ngFor="let item of navigationItems">
-      <button mat-button (click)="selectItem(item.path)">{{ item.text }}</button>
-    </ng-container>
-  </div>
+    <div class="nav-container">
+      <ng-container *ngFor="let item of navigationItems">
+        <button mat-button
+                (click)="selectItem(item.path)"
+                [ngClass]="item.class">{{ item.text }}</button>
+      </ng-container>
+    </div>
+
+
 <div class="spacer"></div>
+
 
   <div class="icon-buttons">
     <button mat-icon-button *ngIf="isLoggedIn " aria-label="Sepet" (click)="selectItem('/basket')" matBadge="{{ cartItemCount }}" matBadgeColor="warn">
