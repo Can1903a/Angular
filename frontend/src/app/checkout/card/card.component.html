@@ -1,0 +1,56 @@
+<div class="card-container">
+  <div class="card" [class.flipped]="isFlipped">
+    <div class="front">
+      <div class="chip"></div>
+      <div class="card-number">{{ cardForm.get('cardNumber')?.value || '**** **** **** ****' }}</div>
+      <div class="card-details">
+        <div class="card-holder">
+          <label>Kart Sahibi</label>
+          <div>{{ cardForm.get('cardName')?.value || 'John Doe' }}</div>
+        </div>
+        <div class="card-expiry">
+          <label>Son Kullanma Tarihi</label>
+          <div>{{ cardForm.get('cardExpiryMonth')?.value || 'MM' }}/{{ cardForm.get('cardExpiryYear')?.value || 'YY' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="back">
+      <div class="magnetic-strip"></div>
+      <div class="signature-box">
+        <label>Imza</label>
+        <div class="signature-line"></div>
+        <div class="card-cvc">{{ cardForm.get('cardCvc')?.value || '***' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="cardNumber">Kart Numarası</label>
+    <input type="text" id="cardNumber" formControlName="cardNumber" (focus)="flipCard()" (blur)="flipCard()">
+  </div>
+
+  <div>
+    <label for="cardName">Kart Sahibi</label>
+    <input type="text" id="cardName" formControlName="cardName">
+  </div>
+
+  <div>
+    <label for="cardExpiryMonth">Son Kullanma Ayı</label>
+    <input type="text" id="cardExpiryMonth" formControlName="cardExpiryMonth">
+  </div>
+
+  <div>
+    <label for="cardExpiryYear">Son Kullanma Yılı</label>
+    <input type="text" id="cardExpiryYear" formControlName="cardExpiryYear">
+  </div>
+
+  <div>
+    <label for="cardCvc">CVC</label>
+    <input type="text" id="cardCvc" formControlName="cardCvc" (focus)="flipCard()" (blur)="flipCard()">
+  </div>
+
+  <button mat-button type="submit">Ödeme Yap</button>
+</form>

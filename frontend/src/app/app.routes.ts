@@ -12,8 +12,9 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { HomeComponent } from './shared/home/home.component';
 import { ProductDetailsComponent } from './user/product-details/product-details.component';
-import { BasketComponent } from './user/basket/basket.component';
+import { BasketComponent } from './checkout/basket/basket.component';
 import { CommentManagementComponent } from './admin/comment-management/comment-management.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 export const routes: Routes = [
@@ -41,6 +42,9 @@ export const routes: Routes = [
           { path: 'profile', component: ProfileComponent, title: 'Profile' }
         ]
       },
+
+        { path: 'checkout', component: CheckoutComponent },
+        { path: '', redirectTo: '/checkout', pathMatch: 'full' },
       {
         path: 'admin',
         canActivate: [RoleGuard],
